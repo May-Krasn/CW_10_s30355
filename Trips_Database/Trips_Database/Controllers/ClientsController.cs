@@ -5,7 +5,7 @@ using Trips_Database.Services;
 namespace Trips_Database.Controllers;
 
 [ApiController]
-[Route("clients")]
+[Route("api/clients")]
 public class ClientsController(IDbService dbService) : ControllerBase
 {
     [HttpDelete("{idClient}")]
