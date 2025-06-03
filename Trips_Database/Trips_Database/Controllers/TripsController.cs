@@ -10,9 +10,15 @@ namespace Trips_Database.Controllers;
 public class TripsController(IDbService dbService) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetTripsAsync()
+    public async Task<IActionResult> GetTripsAsync([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
-        return Ok(await dbService.GetTripsAsync());
+        if (page < 1 || pageSize < 1) return BadRequest("Page and pageSize must be greater than 0");
+
+        var trips = await dbService.GetTripsAsync();
+        
+        var tripsPage = trips.Skip((page - 1) * pageSize).Take(pageSize);
+        
+        return Ok(tripsPage);
     }
 
     [HttpPost("{idTrip}/clients")]
